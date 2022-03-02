@@ -1,0 +1,28 @@
+{
+  "rdbms": {
+    "MARIADB": {
+      "databaseName": "${HOPKIN_DB_NAME}",
+      "pluginId": "MARIADB",
+      "accessType": 0,
+      "hostname": "${HOPKIN_DB_HOST}",
+      "password": "${HOPKIN_DB_PASSWORD}",
+      "port": "${HOPKIN_DB_PORT}",
+      "pluginName": "MariaDB",
+      "driverClassName": "Mysql 8+",
+      "attributes": {
+        "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
+        "QUOTE_ALL_FIELDS": "N",
+        "STREAM_RESULTS": "N",
+        "SUPPORTS_BOOLEAN_DATA_TYPE": "Y",
+        "FORCE_IDENTIFIERS_TO_LOWERCASE": "N",
+        "PRESERVE_RESERVED_WORD_CASE": "Y",
+        "SQL_CONNECT": "",
+        "FORCE_IDENTIFIERS_TO_UPPERCASE": "N",
+        "PREFERRED_SCHEMA_NAME": ""
+      },
+      "manualUrl": "",
+      "username": "${HOPKIN_DB_USER}"
+    }
+  },
+  "name": "hopkin_db"
+}

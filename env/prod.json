@@ -1,0 +1,51 @@
+{
+  "variables" : [ {
+    "name" : "SOURCE",
+    "value" : "CIVICRM",
+    "description" : ""
+  }, {
+    "name" : "COUNTRY",
+    "value" : "AT",
+    "description" : ""
+  }, {
+    "name" : "CIVICRM_AT_HOST",
+    "value" : "10.1.1.28",
+    "description" : ""
+  }, {
+    "name" : "CIVICRM_AT_PORT",
+    "value" : "3326",
+    "description" : ""
+  }, {
+    "name" : "CIVICRM_AT_USER",
+    "value" : "blah",
+    "description" : ""
+  }, {
+    "name" : "CIVICRM_AT_PASSWORD",
+    "value" : "blubb",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_HOST",
+    "value" : "127.0.0.1",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_PORT",
+    "value" : "3306",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_USER",
+    "value" : "hopkin_meta",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_PASSWORD",
+    "value" : "termina2",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_DRIVER",
+    "value" : "com.mysql.jdbc.Driver",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_NAME",
+    "value" : "hopkin_meta",
+    "description" : ""
+  } ]
+}
