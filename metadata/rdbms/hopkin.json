@@ -6,9 +6,9 @@
       "password": "${HOPKIN_DB_PASSWORD}",
       "pluginName": "Generic database",
       "attributes": {
-        "SUPPORTS_TIMESTAMP_DATA_TYPE": "N",
+        "SUPPORTS_TIMESTAMP_DATA_TYPE": "Y",
         "QUOTE_ALL_FIELDS": "N",
-        "SUPPORTS_BOOLEAN_DATA_TYPE": "N",
+        "SUPPORTS_BOOLEAN_DATA_TYPE": "Y",
         "FORCE_IDENTIFIERS_TO_LOWERCASE": "N",
         "PRESERVE_RESERVED_WORD_CASE": "Y",
         "SQL_CONNECT": "",
