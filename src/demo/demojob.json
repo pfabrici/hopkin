@@ -1,0 +1,58 @@
+{
+	"job_name": "demojob",
+	"job_folder": "demo",
+	"job_entries" : [
+		{
+			"script_name": "demojob",
+			"script_type": "hpl",
+			"is_unique": "Y",
+			"is_delta_job": "Y",
+			"delta_script": "hopkin_getdelta_generic.hpl",
+			"valid_from": "1900-01-01",
+			"valid_to": "2024-03-01"
+		},
+		{
+			"script_name": "demojob",
+			"script_type": "hpl",
+			"is_unique": "Y",
+			"is_delta_job": "Y",
+			"delta_script": "hopkin_getdelta_generic.hpl",
+			"valid_from": "2024-03-02",
+			"valid_to": "3000-01-01"
+		}
+	],
+	"job_param_groups": [
+		{ "param_group": "demojob" },
+		{ "param_group": "default" }		
+	],
+	"job_param": [
+		{ 
+			"param_key": "SOURCE_NAME", 
+			"param_value": "a demo source", 
+			"param_type": "String",
+			"is_password": "N",
+			"configured_by": "hopkin",
+			"valid_from": "1900-01-01",
+			"valid_to": "3000-01-01"
+		},
+		{ 
+			"param_key": "TARGET_NAME", 
+			"param_value": "a demo target", 
+			"param_type": "String",
+			"is_password": "N",
+			"configured_by": "hopkin",
+			"valid_from": "1900-01-01",
+			"valid_to": "3000-01-01"
+		},
+		{ 
+			"param_key": "DELTA_TYPE", 
+			"param_value": "timestamp", 
+			"param_type": "String",
+			"is_password": "N",
+			"configured_by": "hopkin",
+			"valid_from": "1900-01-01",
+			"valid_to": "3000-01-01"
+		}
+	],
+	"init_delta_value": "1900-01-01 00:00:00"
+}
