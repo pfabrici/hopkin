@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>hopkin_getdelta_generic</name>
+    <name>hopkin_main_getdelta_generic</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -21,18 +21,18 @@
   </notepads>
   <order>
     <hop>
-      <from>hopkin_getdelta_generic: fetch delta values</from>
-      <to>hopkin_getdelta_generic: log delta values</to>
+      <from>hopkin_main_getdelta_generic: fetch delta values</from>
+      <to>hopkin_main_getdelta_generic: log delta values</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_getdelta_generic: log delta values</from>
+      <from>hopkin_main_getdelta_generic: log delta values</from>
       <to>hopkin_gtdelta_generic: set delta variables</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>hopkin_getdelta_generic: fetch delta values</name>
+    <name>hopkin_main_getdelta_generic: fetch delta values</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -66,7 +66,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_getdelta_generic: log delta values</name>
+    <name>hopkin_main_getdelta_generic: log delta values</name>
     <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>

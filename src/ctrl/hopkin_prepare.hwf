@@ -26,8 +26,8 @@
       <schedulerType>0</schedulerType>
       <weekDay>1</weekDay>
       <parallel>N</parallel>
-      <xloc>544</xloc>
-      <yloc>80</yloc>
+      <xloc>528</xloc>
+      <yloc>160</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -97,18 +97,26 @@ CREATE TABLE IF NOT EXISTS job_prot (
    job_status           varchar(20) ,
    os_process_id        integer,
    exit_code            integer,
-   duration 	        int default 0,
+   duration 	          int default 0,
    ins_timestamp        datetime DEFAULT current_timestamp(),
    mod_timestamp        datetime DEFAULT current_timestamp()
 );
 
+CREATE TABLE IF NOT EXISTS job_varmap (
+   varmap_name	   varchar(20)  NOT NULL,
+   varmap_source        varchar(128) NOT NULL,  	
+   varmap_target        varchar(128) NOT NULL,
+   ins_timestamp        datetime DEFAULT current_timestamp(),
+   mod_timestamp        datetime DEFAULT current_timestamp(),
+   PRIMARY KEY (varmap_name, varmap_target)
+);
+
 </sql>
-      <sqlfilename/>
       <sqlfromfile>N</sqlfromfile>
       <useVariableSubstitution>N</useVariableSubstitution>
       <parallel>N</parallel>
-      <xloc>544</xloc>
-      <yloc>144</yloc>
+      <xloc>528</xloc>
+      <yloc>224</yloc>
       <attributes_hac/>
     </action>
     <action>
@@ -123,6 +131,32 @@ CREATE TABLE IF NOT EXISTS job_prot (
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
       <filename>${PROJECT_HOME}/src/ctrl/hopkin_prepare_jobs.hpl</filename>
+      <loglevel>Basic</loglevel>
+      <parameters>
+        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>
+      <params_from_previous>N</params_from_previous>
+      <run_configuration>local</run_configuration>
+      <set_append_logfile>N</set_append_logfile>
+      <set_logfile>N</set_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <parallel>N</parallel>
+      <xloc>528</xloc>
+      <yloc>288</yloc>
+      <attributes_hac/>
+    </action>
+    <action>
+      <name>hopkin_prepare_varmap.hpl</name>
+      <description/>
+      <type>PIPELINE</type>
+      <attributes/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <clear_files>N</clear_files>
+      <clear_rows>N</clear_rows>
+      <create_parent_folder>N</create_parent_folder>
+      <exec_per_row>N</exec_per_row>
+      <filename>${PROJECT_HOME}/src/ctrl/hopkin_prepare_varmap.hpl</filename>
       <logext/>
       <logfile/>
       <loglevel>Basic</loglevel>
@@ -135,8 +169,8 @@ CREATE TABLE IF NOT EXISTS job_prot (
       <set_logfile>N</set_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <parallel>N</parallel>
-      <xloc>544</xloc>
-      <yloc>208</yloc>
+      <xloc>528</xloc>
+      <yloc>352</yloc>
       <attributes_hac/>
     </action>
   </actions>
@@ -155,8 +189,46 @@ CREATE TABLE IF NOT EXISTS job_prot (
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
     </hop>
+    <hop>
+      <from>hopkin_prepare_jobs.hpl</from>
+      <to>hopkin_prepare_varmap.hpl</to>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
   </hops>
   <notepads>
+    <notepad>
+      <backgroundcolorblue>251</backgroundcolorblue>
+      <backgroundcolorgreen>232</backgroundcolorgreen>
+      <backgroundcolorred>201</backgroundcolorred>
+      <bordercolorblue>90</bordercolorblue>
+      <bordercolorgreen>58</bordercolorgreen>
+      <bordercolorred>14</bordercolorred>
+      <fontbold>N</fontbold>
+      <fontcolorblue>90</fontcolorblue>
+      <fontcolorgreen>58</fontcolorgreen>
+      <fontcolorred>14</fontcolorred>
+      <fontitalic>N</fontitalic>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <height>200</height>
+      <xloc>32</xloc>
+      <yloc>32</yloc>
+      <note>hopkin_prepare
+----------------
+Workflow that controls the creation of Hopkins
+metadata tables in the metadata database. 
+
+After successful creation of the database tables
+the workflow crawles the src/ subfolders except 
+ctrl for json files describing the jobs.
+
+hopkin_prepare_jobs.hpl + hopkin_prepare_job.hpl
+then loads the job details from these json files
+into the metadata tables.</note>
+      <width>277</width>
+    </notepad>
   </notepads>
   <attributes/>
 </workflow>

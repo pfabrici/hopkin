@@ -1,0 +1,20 @@
+{
+	"varmaps" : [
+		{ "varmap_name": "DE","varmap_source": "DE_SOURCE_DB","varmap_target": "SOURCE_DB" },
+		{ "varmap_name": "DE","varmap_source": "DE_SOURCE_PORT","varmap_target": "SOURCE_PORT" },
+		{ "varmap_name": "DE","varmap_source": "DE_SOURCE_HOST","varmap_target": "SOURCE_HOST" },
+		{ "varmap_name": "DE","varmap_source": "DE_SOURCE_USER","varmap_target": "SOURCE_USER" },
+		{ "varmap_name": "DE","varmap_source": "DE_SOURCE_PASS","varmap_target": "SOURCE_PASS" },
+		{ "varmap_name": "BE","varmap_source": "BE_SOURCE_DB","varmap_target": "SOURCE_DB" },
+		{ "varmap_name": "BE","varmap_source": "BE_SOURCE_PORT","varmap_target": "SOURCE_PORT" },
+		{ "varmap_name": "BE","varmap_source": "BE_SOURCE_HOST","varmap_target": "SOURCE_HOST" },
+		{ "varmap_name": "BE","varmap_source": "BE_SOURCE_USER","varmap_target": "SOURCE_USER" },
+		{ "varmap_name": "BE","varmap_source": "BE_SOURCE_PASS","varmap_target": "SOURCE_PASS" },
+		{ "varmap_name": "FR","varmap_source": "FR_SOURCE_DB","varmap_target": "SOURCE_DB" },
+		{ "varmap_name": "FR","varmap_source": "FR_SOURCE_PORT","varmap_target": "SOURCE_PORT" },
+		{ "varmap_name": "FR","varmap_source": "FR_SOURCE_HOST","varmap_target": "SOURCE_HOST" },
+		{ "varmap_name": "FR","varmap_source": "FR_SOURCE_USER","varmap_target": "SOURCE_USER" },
+		{ "varmap_name": "FR","varmap_source": "FR_SOURCE_PASS","varmap_target": "SOURCE_PASS" }
+	]
+}	
+	

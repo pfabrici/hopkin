@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>hopkin_initprot</name>
+    <name>hopkin_main_initprot</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -21,48 +21,48 @@
   </notepads>
   <order>
     <hop>
-      <from>hopkin_initprot: define constants</from>
-      <to>hopkin_initprot: get process_id</to>
+      <from>hopkin_main_initprot: define constants</from>
+      <to>hopkin_main_initprot: get process_id</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: get process_id</from>
-      <to>hopkin_initprot: get current date</to>
+      <from>hopkin_main_initprot: get process_id</from>
+      <to>hopkin_main_initprot: get current date</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: fetch running jobs</from>
-      <to>hopkin_initprot: define constants</to>
+      <from>hopkin_main_initprot: fetch running jobs</from>
+      <to>hopkin_main_initprot: define constants</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: get current date</from>
-      <to>hopkin_initprot: filter not running</to>
+      <from>hopkin_main_initprot: get current date</from>
+      <to>hopkin_main_initprot: filter not running</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: filter not running</from>
-      <to>hopkin_initprot: insert running record</to>
+      <from>hopkin_main_initprot: filter not running</from>
+      <to>hopkin_main_initprot: insert running record</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: filter not running</from>
-      <to>hopkin_initprot: insert skipped record</to>
+      <from>hopkin_main_initprot: filter not running</from>
+      <to>hopkin_main_initprot: insert skipped record</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: insert skipped record</from>
-      <to>hopkin_initprot: set SKIPPED runstatus</to>
+      <from>hopkin_main_initprot: insert skipped record</from>
+      <to>hopkin_main_initprot: set SKIPPED runstatus</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_initprot: insert running record</from>
-      <to>hopkin_initprot: set RUNNING status</to>
+      <from>hopkin_main_initprot: insert running record</from>
+      <to>hopkin_main_initprot: set RUNNING status</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>hopkin_initprot: define constants</name>
+    <name>hopkin_main_initprot: define constants</name>
     <type>Constant</type>
     <description/>
     <distribute>Y</distribute>
@@ -97,7 +97,7 @@
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: fetch running jobs</name>
+    <name>hopkin_main_initprot: fetch running jobs</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -139,7 +139,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: filter not running</name>
+    <name>hopkin_main_initprot: filter not running</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -168,8 +168,8 @@ FROM
         </value>
       </condition>
     </compare>
-    <send_false_to>hopkin_initprot: insert skipped record</send_false_to>
-    <send_true_to>hopkin_initprot: insert running record</send_true_to>
+    <send_false_to>hopkin_main_initprot: insert skipped record</send_false_to>
+    <send_true_to>hopkin_main_initprot: insert running record</send_true_to>
     <attributes/>
     <GUI>
       <xloc>416</xloc>
@@ -177,7 +177,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: get current date</name>
+    <name>hopkin_main_initprot: get current date</name>
     <type>SystemInfo</type>
     <description/>
     <distribute>Y</distribute>
@@ -204,7 +204,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: get process_id</name>
+    <name>hopkin_main_initprot: get process_id</name>
     <type>GetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -239,7 +239,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: insert running record</name>
+    <name>hopkin_main_initprot: insert running record</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -297,7 +297,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: insert skipped record</name>
+    <name>hopkin_main_initprot: insert skipped record</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -358,7 +358,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: set RUNNING status</name>
+    <name>hopkin_main_initprot: set RUNNING status</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -383,7 +383,7 @@ FROM
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_initprot: set SKIPPED runstatus</name>
+    <name>hopkin_main_initprot: set SKIPPED runstatus</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>

@@ -21,6 +21,11 @@
       <default_value>demojob</default_value>
       <description/>
     </parameter>
+    <parameter>
+      <name>P_VARMAP_NAME</name>
+      <default_value/>
+      <description/>
+    </parameter>
   </parameters>
   <actions>
     <action>
@@ -62,7 +67,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/src/ctrl/hopkin_dbparams.hpl</filename>
+      <filename>${PROJECT_HOME}/src/ctrl/hopkin_main_dbparams.hpl</filename>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -88,7 +93,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/src/ctrl/hopkin_osenv.hpl</filename>
+      <filename>${PROJECT_HOME}/src/ctrl/hopkin_main_osenv.hpl</filename>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -148,7 +153,7 @@
       <clear_rows>N</clear_rows>
       <create_parent_folder>N</create_parent_folder>
       <exec_per_row>N</exec_per_row>
-      <filename>${PROJECT_HOME}/src/ctrl/hopkin_initprot.hpl</filename>
+      <filename>${PROJECT_HOME}/src/ctrl/hopkin_main_initprot.hpl</filename>
       <loglevel>Basic</loglevel>
       <parameters>
         <pass_all_parameters>Y</pass_all_parameters>
@@ -288,7 +293,6 @@ WHERE
 	AND job_folder	= '${P_JOB_FOLDER}'
 	AND job_status 	= 'running'	
 	AND process_id 	= '${PROCESS_ID}'</sql>
-      <sqlfilename/>
       <sqlfromfile>N</sqlfromfile>
       <useVariableSubstitution>Y</useVariableSubstitution>
       <parallel>N</parallel>
@@ -379,7 +383,7 @@ ON DUPLICATE KEY UPDATE
       <destinationBCc/>
       <replyto>${MAILSENDERADDRESS}</replyto>
       <replytoname>${MAILSENDERNAME}</replytoname>
-      <subject>DWH Job ${P_JOBNAME} failed on ${DWHHOSTNAME}</subject>
+      <subject>DWH Job ${P_JOB_NAME} failed on ${DWHHOSTNAME}</subject>
       <include_date>N</include_date>
       <contact_person/>
       <contact_phone/>
@@ -1030,8 +1034,8 @@ Please restart the job with a valid value.</logmessage>
       <fontname>Ubuntu</fontname>
       <fontsize>11</fontsize>
       <height>44</height>
-      <xloc>32</xloc>
-      <yloc>32</yloc>
+      <xloc>16</xloc>
+      <yloc>16</yloc>
       <note>hopkin_main
 -----------------------</note>
       <width>125</width>

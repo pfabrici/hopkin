@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>hopkin_dbparams</name>
+    <name>hopkin_main_dbparams</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -21,38 +21,160 @@
   </notepads>
   <order>
     <hop>
-      <from>hopkin_dbparams: fetch exec details</from>
-      <to>hopkin_dbparams: log job details</to>
+      <from>hopkin_main_dbparams: fetch exec details</from>
+      <to>hopkin_main_dbparams: log job details</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: log job details</from>
-      <to>hopkin_dbparams: set exec details</to>
+      <from>hopkin_main_dbparams: log job details</from>
+      <to>hopkin_main_dbparams: set exec details</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: fetch job params</from>
-      <to>hopkin_dbparams: log params</to>
+      <from>hopkin_main_dbparams: fetch job params</from>
+      <to>hopkin_main_dbparams: log params</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: log params</from>
-      <to>hopkin_dbparams: set job params</to>
+      <from>hopkin_main_dbparams: log params</from>
+      <to>hopkin_main_dbparams: set job params</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: log default DELTA_NEXT</from>
-      <to>hopkin_dbparams: set default delta variables</to>
+      <from>hopkin_main_dbparams: log default DELTA_NEXT</from>
+      <to>hopkin_main_dbparams: set default delta variables</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>hopkin_getdbparams: generate default DELTA_NEXT</from>
-      <to>hopkin_dbparams: log default DELTA_NEXT</to>
+      <to>hopkin_main_dbparams: log default DELTA_NEXT</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Tabellen Input</from>
+      <to>Schreibe ins Log</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Schreibe ins Log</from>
+      <to>JavaScript</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>hopkin_dbparams: fetch exec details</name>
+    <name>JavaScript</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+
+var result = getVariable(varmap_source,"");
+setVariable(varmap_target,result,"g");</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1344</xloc>
+      <yloc>368</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Schreibe ins Log</name>
+    <type>WriteToLog</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
+    <fields>
+      </fields>
+    <attributes/>
+    <GUI>
+      <xloc>1344</xloc>
+      <yloc>288</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>Tabellen Input</name>
+    <type>TableInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>hopkin</connection>
+    <execute_each_row>N</execute_each_row>
+    <limit>0</limit>
+    <sql>SELECT
+	varmap_source,
+	varmap_target
+FROM
+	job_varmap
+WHERE
+	varmap_name = '${P_VARMAP_NAME}'</sql>
+    <variables_active>Y</variables_active>
+    <attributes/>
+    <GUI>
+      <xloc>1344</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>hopkin_getdbparams: generate default DELTA_NEXT</name>
+    <type>RowGenerator</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <length>-1</length>
+        <name>DELTA_NEXT</name>
+        <precision>-1</precision>
+        <set_empty_string>Y</set_empty_string>
+        <type>String</type>
+      </field>
+    </fields>
+    <interval_in_ms>5000</interval_in_ms>
+    <last_time_field>FiveSecondsAgo</last_time_field>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <row_time_field>now</row_time_field>
+    <attributes/>
+    <GUI>
+      <xloc>352</xloc>
+      <yloc>208</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>hopkin_main_dbparams: fetch exec details</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -82,12 +204,12 @@ WHERE
     <variables_active>Y</variables_active>
     <attributes/>
     <GUI>
-      <xloc>896</xloc>
+      <xloc>1008</xloc>
       <yloc>208</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: fetch job params</name>
+    <name>hopkin_main_dbparams: fetch job params</name>
     <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -113,7 +235,7 @@ FROM
 	job_param_group pf,
 	job_param p
 WHERE
-	jd.job_name 		    	= '${P_JOBNAME}'
+	jd.job_name 		    	= '${P_JOB_NAME}'
 	AND jd.job_folder		= '${P_JOB_FOLDER}'
 	AND jd.valid_from 		&lt;= CURRENT_DATE
 	AND jd.valid_to 		> CURRENT_DATE
@@ -122,12 +244,12 @@ WHERE
     <variables_active>Y</variables_active>
     <attributes/>
     <GUI>
-      <xloc>640</xloc>
+      <xloc>688</xloc>
       <yloc>208</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: log default DELTA_NEXT</name>
+    <name>hopkin_main_dbparams: log default DELTA_NEXT</name>
     <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
@@ -151,7 +273,7 @@ WHERE
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: log job details</name>
+    <name>hopkin_main_dbparams: log job details</name>
     <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
@@ -182,12 +304,12 @@ WHERE
     </fields>
     <attributes/>
     <GUI>
-      <xloc>896</xloc>
+      <xloc>1008</xloc>
       <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: log params</name>
+    <name>hopkin_main_dbparams: log params</name>
     <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
@@ -212,12 +334,12 @@ WHERE
     </fields>
     <attributes/>
     <GUI>
-      <xloc>640</xloc>
+      <xloc>688</xloc>
       <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: set default delta variables</name>
+    <name>hopkin_main_dbparams: set default delta variables</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -242,7 +364,7 @@ WHERE
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: set exec details</name>
+    <name>hopkin_main_dbparams: set exec details</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -277,12 +399,12 @@ WHERE
     <use_formatting>Y</use_formatting>
     <attributes/>
     <GUI>
-      <xloc>896</xloc>
+      <xloc>1008</xloc>
       <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: set job params</name>
+    <name>hopkin_main_dbparams: set job params</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
@@ -313,39 +435,8 @@ setVariable(param_key,param_value,"g")</jsScript_script>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>640</xloc>
+      <xloc>688</xloc>
       <yloc>368</yloc>
-    </GUI>
-  </transform>
-  <transform>
-    <name>hopkin_getdbparams: generate default DELTA_NEXT</name>
-    <type>RowGenerator</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <length>-1</length>
-        <name>DELTA_NEXT</name>
-        <precision>-1</precision>
-        <set_empty_string>Y</set_empty_string>
-        <type>String</type>
-      </field>
-    </fields>
-    <interval_in_ms>5000</interval_in_ms>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <row_time_field>now</row_time_field>
-    <attributes/>
-    <GUI>
-      <xloc>352</xloc>
-      <yloc>208</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

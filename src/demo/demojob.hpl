@@ -139,10 +139,6 @@
     </partitioning>
     <fields>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>DELTA_MIN</name>
         <precision>-1</precision>
@@ -274,9 +270,20 @@
     <displayHeader>Y</displayHeader>
     <limitRows>N</limitRows>
     <limitRowsNumber>0</limitRowsNumber>
-    <logmessage/>
+    <logmessage>Dies ist das Mainlog vom demojob :
+
+${AT_SOURCE_DB}
+
+${SOURCE_NAME}
+
+${SOURCE_DB}
+
+${SOURCE_PORT}</logmessage>
     <fields>
-      </fields>
+      <field>
+        <name>ident</name>
+      </field>
+    </fields>
     <attributes/>
     <GUI>
       <xloc>368</xloc>

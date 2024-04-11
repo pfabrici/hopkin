@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pipeline>
   <info>
-    <name>hopkin_osenv</name>
+    <name>hopkin_main_osenv</name>
     <name_sync_with_filename>Y</name_sync_with_filename>
     <description/>
     <extended_description/>
@@ -35,7 +35,7 @@
       <height>95</height>
       <xloc>48</xloc>
       <yloc>32</yloc>
-      <note>hopkin_osenv
+      <note>hopkin_main_osenv
 -----------------------
 fetch OS environment vars and 
 transform them into Hop vars
@@ -45,48 +45,48 @@ when their name ends with DIR</note>
   </notepads>
   <order>
     <hop>
-      <from>hopkin_osenv: generate a row</from>
-      <to>hopkin_osenv: get all env var names</to>
+      <from>hopkin_main_osenv: generate a row</from>
+      <to>hopkin_main_osenv: get all env var names</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: get all env var names</from>
-      <to>hopkin_osenv: split all os env var names</to>
+      <from>hopkin_main_osenv: get all env var names</from>
+      <to>hopkin_main_osenv: split all os env var names</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: split all os env var names</from>
-      <to>hopkin_osenv: pass only DIR vars</to>
+      <from>hopkin_main_osenv: split all os env var names</from>
+      <to>hopkin_main_osenv: pass only DIR vars</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: pass only DIR vars</from>
-      <to>hopkin_osenv: get var values</to>
+      <from>hopkin_main_osenv: pass only DIR vars</from>
+      <to>hopkin_main_osenv: get var values</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: get var values</from>
-      <to>hopkin_osenv: log vars</to>
+      <from>hopkin_main_osenv: get var values</from>
+      <to>hopkin_main_osenv: log vars</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: log vars</from>
-      <to>hopkin_osenv: set hop variables</to>
+      <from>hopkin_main_osenv: log vars</from>
+      <to>hopkin_main_osenv: set hop variables</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: get hostname</from>
-      <to>hopkin_osenv: get process_id</to>
+      <from>hopkin_main_osenv: get hostname</from>
+      <to>hopkin_main_osenv: get process_id</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_osenv: get process_id</from>
-      <to>hopkin_osenv: set sysinfos</to>
+      <from>hopkin_main_osenv: get process_id</from>
+      <to>hopkin_main_osenv: set sysinfos</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <transform>
-    <name>hopkin_osenv: generate a row</name>
+    <name>hopkin_main_osenv: generate a row</name>
     <type>RowGenerator</type>
     <description/>
     <distribute>Y</distribute>
@@ -110,7 +110,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: get all env var names</name>
+    <name>hopkin_main_osenv: get all env var names</name>
     <type>Janino</type>
     <description/>
     <distribute>Y</distribute>
@@ -135,7 +135,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: get hostname</name>
+    <name>hopkin_main_osenv: get hostname</name>
     <type>SystemInfo</type>
     <description/>
     <distribute>Y</distribute>
@@ -158,7 +158,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: get process_id</name>
+    <name>hopkin_main_osenv: get process_id</name>
     <type>RandomValue</type>
     <description/>
     <distribute>Y</distribute>
@@ -181,7 +181,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: get var values</name>
+    <name>hopkin_main_osenv: get var values</name>
     <type>Janino</type>
     <description/>
     <distribute>Y</distribute>
@@ -206,7 +206,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: log vars</name>
+    <name>hopkin_main_osenv: log vars</name>
     <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
@@ -230,7 +230,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: pass only DIR vars</name>
+    <name>hopkin_main_osenv: pass only DIR vars</name>
     <type>FilterRows</type>
     <description/>
     <distribute>Y</distribute>
@@ -258,7 +258,7 @@ when their name ends with DIR</note>
         </value>
       </condition>
     </compare>
-    <send_true_to>hopkin_osenv: get var values</send_true_to>
+    <send_true_to>hopkin_main_osenv: get var values</send_true_to>
     <attributes/>
     <GUI>
       <xloc>512</xloc>
@@ -266,7 +266,7 @@ when their name ends with DIR</note>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: set hop variables</name>
+    <name>hopkin_main_osenv: set hop variables</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
@@ -294,7 +294,7 @@ setVariable(key,value,"g")</jsScript_script>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: set sysinfos</name>
+    <name>hopkin_main_osenv: set sysinfos</name>
     <type>SetVariable</type>
     <description/>
     <distribute>Y</distribute>
@@ -326,7 +326,7 @@ setVariable(key,value,"g")</jsScript_script>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_osenv: split all os env var names</name>
+    <name>hopkin_main_osenv: split all os env var names</name>
     <type>SplitFieldToRows3</type>
     <description/>
     <distribute>Y</distribute>
