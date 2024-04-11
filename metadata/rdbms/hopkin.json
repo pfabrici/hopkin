@@ -1,0 +1,24 @@
+{
+  "rdbms": {
+    "GENERIC": {
+      "pluginId": "GENERIC",
+      "accessType": 0,
+      "password": "${HOPKIN_DB_PASSWORD}",
+      "pluginName": "Generic database",
+      "attributes": {
+        "SUPPORTS_TIMESTAMP_DATA_TYPE": "N",
+        "QUOTE_ALL_FIELDS": "N",
+        "SUPPORTS_BOOLEAN_DATA_TYPE": "N",
+        "FORCE_IDENTIFIERS_TO_LOWERCASE": "N",
+        "PRESERVE_RESERVED_WORD_CASE": "Y",
+        "SQL_CONNECT": "",
+        "FORCE_IDENTIFIERS_TO_UPPERCASE": "N",
+        "PREFERRED_SCHEMA_NAME": "",
+        "CUSTOM_DRIVER_CLASS": "${HOPKIN_DB_CLASS}"
+      },
+      "manualUrl": "${HOPKIN_DB_URL}",
+      "username": "${HOPKIN_DB_USER}"
+    }
+  },
+  "name": "hopkin"
+}

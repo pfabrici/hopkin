@@ -16,87 +16,41 @@
     <created_date>2021/09/09 20:38:08.329</created_date>
     <modified_user>-</modified_user>
     <modified_date>2021/09/09 20:38:08.329</modified_date>
-    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
-    <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <order>
     <hop>
-      <from>hopkin_dbparams: fetch job params</from>
-      <to>hopkin_dbparams: set job params</to>
+      <from>hopkin_dbparams: fetch exec details</from>
+      <to>hopkin_dbparams: log job details</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: fetch exec details</from>
+      <from>hopkin_dbparams: log job details</from>
       <to>hopkin_dbparams: set exec details</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: get hostname</from>
-      <to>hopkin_dbparams: get process_id</to>
+      <from>hopkin_dbparams: fetch job params</from>
+      <to>hopkin_dbparams: log params</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: get process_id</from>
-      <to>hopkin_dbparams: set sysinfos</to>
+      <from>hopkin_dbparams: log params</from>
+      <to>hopkin_dbparams: set job params</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>hopkin_dbparams: define default delta</from>
+      <from>hopkin_dbparams: log default DELTA_NEXT</from>
       <to>hopkin_dbparams: set default delta variables</to>
       <enabled>Y</enabled>
     </hop>
+    <hop>
+      <from>hopkin_getdbparams: generate default DELTA_NEXT</from>
+      <to>hopkin_dbparams: log default DELTA_NEXT</to>
+      <enabled>Y</enabled>
+    </hop>
   </order>
-  <transform>
-    <name>hopkin_dbparams: define default delta</name>
-    <type>Constant</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <fields>
-      <field>
-        <set_empty_string>N</set_empty_string>
-        <length>-1</length>
-        <name>DELTA_NEXT_INT</name>
-        <precision>-1</precision>
-        <type>Integer</type>
-        <nullif>0</nullif>
-      </field>
-      <field>
-        <set_empty_string>N</set_empty_string>
-        <length>-1</length>
-        <name>DELTA_NEXT_STR</name>
-        <precision>-1</precision>
-        <type>String</type>
-      </field>
-      <field>
-        <set_empty_string>N</set_empty_string>
-        <length>-1</length>
-        <name>DELTA_NEXT_TS</name>
-        <precision>-1</precision>
-        <type>String</type>
-        <nullif>1900-01-01 00:00:00.000</nullif>
-      </field>
-      <field>
-        <set_empty_string>N</set_empty_string>
-        <length>-1</length>
-        <name>DELTA_NEXT_DATE</name>
-        <precision>-1</precision>
-        <type>String</type>
-      </field>
-    </fields>
-    <attributes/>
-    <GUI>
-      <xloc>352</xloc>
-      <yloc>208</yloc>
-    </GUI>
-  </transform>
   <transform>
     <name>hopkin_dbparams: fetch exec details</name>
     <type>TableInput</type>
@@ -108,19 +62,19 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>hopkin_db</connection>
+    <connection>hopkin</connection>
     <execute_each_row>N</execute_each_row>
     <limit>0</limit>
     <sql>SELECT
-	script_type,
+	lower(script_type)	AS script_type,
 	CONCAT('src/',lower(job_type),'/',jd.script_name,CASE WHEN js.script_suffix IS NULL THEN '' ELSE js.script_suffix END,'.',jd.script_type)   AS script_fname,
-	deltajob,
+	upper(deltajob)	AS deltajob,
 	deltascript
 from
-	( SELECT * FROM hopkin_meta.job_def   
+	( SELECT * FROM job_def   
 	WHERE valid_from &lt;= CURRENT_TIMESTAMP AND valid_to > CURRENT_TIMESTAMP
 	AND job_name = '${P_JOBNAME}'   ) jd
-	LEFT JOIN ( SELECT * FROM hopkin_meta.job_suffix
+	LEFT JOIN ( SELECT * FROM job_suffix
 	WHERE valid_from &lt;= CURRENT_TIMESTAMP AND valid_to > CURRENT_TIMESTAMP
 	AND job_name = '${P_JOBNAME}'
 	AND source_name = '${P_SOURCE}'
@@ -145,7 +99,7 @@ from
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <connection>hopkin_db</connection>
+    <connection>hopkin</connection>
     <execute_each_row>N</execute_each_row>
     <limit>0</limit>
     <sql>SELECT
@@ -157,9 +111,9 @@ from
 		ELSE '***'
 	END 		AS logger_value
 FROM
-	hopkin_meta.job_def  jd,
-	hopkin_meta.job_param_group pf,
-	hopkin_meta.job_param p
+	job_def  jd,
+	job_param_group pf,
+	job_param p
 WHERE
 	jd.job_name 		    	= '${P_JOBNAME}'
 	AND jd.valid_from 		&lt;= CURRENT_TIMESTAMP
@@ -174,8 +128,8 @@ WHERE
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: get hostname</name>
-    <type>SystemInfo</type>
+    <name>hopkin_dbparams: log default DELTA_NEXT</name>
+    <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -184,21 +138,22 @@ WHERE
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
     <fields>
-      <field>
-        <name>DWHHOSTNAME</name>
-        <type>Hostname</type>
-      </field>
-    </fields>
+      </fields>
     <attributes/>
     <GUI>
-      <xloc>1168</xloc>
-      <yloc>208</yloc>
+      <xloc>352</xloc>
+      <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: get process_id</name>
-    <type>RandomValue</type>
+    <name>hopkin_dbparams: log job details</name>
+    <type>WriteToLog</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -207,16 +162,59 @@ WHERE
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
     <fields>
       <field>
-        <name>PROCESS_ID</name>
-        <type>random uuid</type>
+        <name>script_type</name>
+      </field>
+      <field>
+        <name>script_fname</name>
+      </field>
+      <field>
+        <name>deltajob</name>
+      </field>
+      <field>
+        <name>deltascript</name>
       </field>
     </fields>
     <attributes/>
     <GUI>
-      <xloc>1168</xloc>
-      <yloc>272</yloc>
+      <xloc>896</xloc>
+      <yloc>288</yloc>
+    </GUI>
+  </transform>
+  <transform>
+    <name>hopkin_dbparams: log params</name>
+    <type>WriteToLog</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <loglevel>log_level_basic</loglevel>
+    <displayHeader>Y</displayHeader>
+    <limitRows>N</limitRows>
+    <limitRowsNumber>0</limitRowsNumber>
+    <logmessage/>
+    <fields>
+      <field>
+        <name>param_key</name>
+      </field>
+      <field>
+        <name>logger_value</name>
+      </field>
+    </fields>
+    <attributes/>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>288</yloc>
     </GUI>
   </transform>
   <transform>
@@ -232,35 +230,16 @@ WHERE
     </partitioning>
     <fields>
       <field>
-        <field_name>DELTA_NEXT_INT</field_name>
-        <variable_name>DELTA_NEXT_INT</variable_name>
+        <field_name>DELTA_NEXT</field_name>
+        <variable_name>DELTA_NEXT</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
-      </field>
-      <field>
-        <field_name>DELTA_NEXT_STR</field_name>
-        <variable_name>DELTA_NEXT_STR</variable_name>
-        <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
-      </field>
-      <field>
-        <field_name>DELTA_NEXT_TS</field_name>
-        <variable_name>DELTA_NEXT_TS</variable_name>
-        <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
-      </field>
-      <field>
-        <field_name>DELTA_NEXT_DATE</field_name>
-        <variable_name>DELTA_NEXT_DATE</variable_name>
-        <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
       </field>
     </fields>
     <use_formatting>Y</use_formatting>
     <attributes/>
     <GUI>
       <xloc>352</xloc>
-      <yloc>336</yloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
@@ -279,32 +258,28 @@ WHERE
         <field_name>script_type</field_name>
         <variable_name>SCRIPT_TYPE</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
       </field>
       <field>
         <field_name>script_fname</field_name>
         <variable_name>SCRIPT_FNAME</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
       </field>
       <field>
         <field_name>deltajob</field_name>
         <variable_name>DELTAJOB</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
       </field>
       <field>
         <field_name>deltascript</field_name>
         <variable_name>DELTASCRIPT</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
       </field>
     </fields>
     <use_formatting>Y</use_formatting>
     <attributes/>
     <GUI>
       <xloc>896</xloc>
-      <yloc>336</yloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
@@ -340,12 +315,12 @@ setVariable(param_key,param_value,"g")</jsScript_script>
     <attributes/>
     <GUI>
       <xloc>640</xloc>
-      <yloc>336</yloc>
+      <yloc>368</yloc>
     </GUI>
   </transform>
   <transform>
-    <name>hopkin_dbparams: set sysinfos</name>
-    <type>SetVariable</type>
+    <name>hopkin_getdbparams: generate default DELTA_NEXT</name>
+    <type>RowGenerator</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -356,17 +331,27 @@ setVariable(param_key,param_value,"g")</jsScript_script>
     </partitioning>
     <fields>
       <field>
-        <field_name>PROCESS_ID</field_name>
-        <variable_name>PROCESS_ID</variable_name>
-        <variable_type>ROOT_WORKFLOW</variable_type>
-        <default_value/>
+        <currency/>
+        <decimal/>
+        <format/>
+        <group/>
+        <length>-1</length>
+        <name>DELTA_NEXT</name>
+        <nullif/>
+        <precision>-1</precision>
+        <set_empty_string>Y</set_empty_string>
+        <type>String</type>
       </field>
     </fields>
-    <use_formatting>Y</use_formatting>
+    <interval_in_ms>5000</interval_in_ms>
+    <last_time_field>FiveSecondsAgo</last_time_field>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <row_time_field>now</row_time_field>
     <attributes/>
     <GUI>
-      <xloc>1168</xloc>
-      <yloc>336</yloc>
+      <xloc>352</xloc>
+      <yloc>208</yloc>
     </GUI>
   </transform>
   <transform_error_handling>

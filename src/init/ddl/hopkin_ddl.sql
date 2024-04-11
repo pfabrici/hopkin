@@ -24,20 +24,16 @@ CREATE TABLE job_def
 
 CREATE TABLE job_delta
 (
-   target_name varchar(255) NOT NULL,
-   source_name varchar(255) NOT NULL,
-   source varchar(255) NOT NULL,
-   delta_type varchar(255) NOT NULL,
-   str_value varchar(255) ,
-   date_value date ,
-   ts_value timestamp ,
-   int_value integer ,
+   target_name 	varchar(255) NOT NULL,
+   source_name 	varchar(255) NOT NULL,
+   delta_type 	varchar(255) NOT NULL,
+   delta_value 	varchar(255) ,
    ins_timestamp datetime DEFAULT current_timestamp() NOT NULL,
    mod_timestamp datetime DEFAULT current_timestamp(),
-   run_id integer ,
-   PRIMARY KEY (target_name,source_name,source)
-)
-;
+   process_id varchar(40),
+   PRIMARY KEY (target_name,source_name,delta_type)
+);
+
 
 CREATE TABLE job_param_group (
    job_name varchar(128) NOT NULL,
@@ -67,17 +63,18 @@ CREATE TABLE job_param
 )
 ;
 
-CREATE TABLE job_prot
-(
-   run_id integer PRIMARY KEY NOT NULL,
-   process_id varchar(40) DEFAULT NULL,
+DROP TABLE job_prot;
+CREATE TABLE job_prot (
+   process_id varchar(40) PRIMARY KEY NOT NULL,
    job_name varchar(128) NOT NULL,
    job_status varchar(20) ,
    os_process_id integer ,
+   duration 	int default 0,
    ins_timestamp datetime DEFAULT current_timestamp(),
    mod_timestamp datetime DEFAULT current_timestamp()
 )
 ;
+
 ALTER TABLE job_prot
 ADD CONSTRAINT job_prot_ibfk_1
 FOREIGN KEY (job_name)
