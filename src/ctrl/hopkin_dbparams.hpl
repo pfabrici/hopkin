@@ -67,19 +67,17 @@
     <limit>0</limit>
     <sql>SELECT
 	lower(script_type)	AS script_type,
-	CONCAT('src/',lower(job_type),'/',jd.script_name,CASE WHEN js.script_suffix IS NULL THEN '' ELSE js.script_suffix END,'.',jd.script_type)   AS script_fname,
-	upper(deltajob)	AS deltajob,
-	deltascript
-from
-	( SELECT * FROM job_def   
-	WHERE valid_from &lt;= CURRENT_TIMESTAMP AND valid_to > CURRENT_TIMESTAMP
-	AND job_name = '${P_JOBNAME}'   ) jd
-	LEFT JOIN ( SELECT * FROM job_suffix
-	WHERE valid_from &lt;= CURRENT_TIMESTAMP AND valid_to > CURRENT_TIMESTAMP
-	AND job_name = '${P_JOBNAME}'
-	AND source_name = '${P_SOURCE}'
-	) js
-		ON ( jd.job_name = js.job_name )
+	CONCAT('src/',lower(job_folder),'/',jd.script_name, '.',jd.script_type)   AS script_fname,
+	upper(is_delta_job)	AS is_delta_job,
+	delta_script
+FROM
+	job_def   jd
+WHERE 
+	valid_from 		&lt;= CURRENT_DATE 
+	AND valid_to 		> CURRENT_DATE 
+	AND job_name 		= '${P_JOB_NAME}'   
+	AND job_folder 	= '${P_JOB_FOLDER}'
+
 </sql>
     <variables_active>Y</variables_active>
     <attributes/>
@@ -106,7 +104,7 @@ from
 	param_key,
 	param_value,
 	CASE 
-		WHEN param_ispwd ='N'
+		WHEN is_password ='N'
 		THEN param_value 
 		ELSE '***'
 	END 		AS logger_value
@@ -116,10 +114,11 @@ FROM
 	job_param p
 WHERE
 	jd.job_name 		    	= '${P_JOBNAME}'
-	AND jd.valid_from 		&lt;= CURRENT_TIMESTAMP
-	AND jd.valid_to 	> CURRENT_TIMESTAMP
-	AND jd.job_name        = pf.job_name
-	AND p.param_group    = pf.param_group</sql>
+	AND jd.job_folder		= '${P_JOB_FOLDER}'
+	AND jd.valid_from 		&lt;= CURRENT_DATE
+	AND jd.valid_to 		> CURRENT_DATE
+	AND jd.job_name        	= pf.job_name
+	AND p.param_group    	= pf.param_group</sql>
     <variables_active>Y</variables_active>
     <attributes/>
     <GUI>
@@ -175,10 +174,10 @@ WHERE
         <name>script_fname</name>
       </field>
       <field>
-        <name>deltajob</name>
+        <name>is_delta_job</name>
       </field>
       <field>
-        <name>deltascript</name>
+        <name>delta_script</name>
       </field>
     </fields>
     <attributes/>
@@ -265,13 +264,13 @@ WHERE
         <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
-        <field_name>deltajob</field_name>
-        <variable_name>DELTAJOB</variable_name>
+        <field_name>is_delta_job</field_name>
+        <variable_name>IS_DELTA_JOB</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
       <field>
-        <field_name>deltascript</field_name>
-        <variable_name>DELTASCRIPT</variable_name>
+        <field_name>delta_script</field_name>
+        <variable_name>DELTA_SCRIPT</variable_name>
         <variable_type>ROOT_WORKFLOW</variable_type>
       </field>
     </fields>
@@ -331,13 +330,8 @@ setVariable(param_key,param_value,"g")</jsScript_script>
     </partitioning>
     <fields>
       <field>
-        <currency/>
-        <decimal/>
-        <format/>
-        <group/>
         <length>-1</length>
         <name>DELTA_NEXT</name>
-        <nullif/>
         <precision>-1</precision>
         <set_empty_string>Y</set_empty_string>
         <type>String</type>
