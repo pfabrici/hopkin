@@ -1,0 +1,43 @@
+{
+  "variables" : [ {
+    "name" : "HOPKIN_DB_USER",
+    "value" : "hopkin",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_PASSWORD",
+    "value" : "aBetterPasswordThanThis",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_CLASS",
+    "value" : "org.mariadb.jdbc.Driver",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_URL",
+    "value" : "jdbc:mariadb://127.0.0.1:3306/hopkin",
+    "description" : ""
+  }, {
+    "name" : "HOPKIN_DB_TYPE",
+    "value" : "mariadb",
+    "description" : ""
+  }, {
+    "name" : "MAILSERVER",
+    "value" : "127.0.0.1",
+    "description" : ""
+  }, {
+    "name" : "MAILSENDERNAME",
+    "value" : "hopkin",
+    "description" : ""
+  }, {
+    "name" : "MAILSENDERADDRESS",
+    "value" : "hopkin@mydomain.hop",
+    "description" : ""
+  }, {
+    "name" : "MAILRECIPIENT",
+    "value" : "hopkin@mydomain.hop",
+    "description" : ""
+  }, {
+    "name" : "MAILSERVRPORT",
+    "value" : "567",
+    "description" : ""
+  } ]
+}
