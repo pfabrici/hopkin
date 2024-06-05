@@ -1,4 +1,12 @@
 # Hopkin
+
+* [Purpose](#Purpose)
+* [Getting Started](#Getting started)
+    * [General](#General)
+    * [Prepare Database for Metadata](#General)
+    * [Preparations on OS level](#Preparations on OS level)
+
+
 ## Purpose
 Hopkin aims to support you to get started with Apache Hop ( https://hop.apache.org ) projects by supplying a template project containing some useful extensions and a documentation how to set up an environment that supports developer and server.
 
@@ -12,8 +20,8 @@ The extensions include a
     - switch variable content by startparameter
 - central management of notifications ( by mail )
 
-## Getting started
-### Installation and configuration of Apache Hop with Hopkin
+## Getting started with Apache Hop with Hopkin
+### General
 
 There is a detailed documentation of how to get started with Apache Hop on its website at https://hop.apache.org/manual/latest/getting-started/. However, some more thoughts are necessary to end up with a robust installation that fulfills production needs.
 
@@ -31,8 +39,7 @@ However, due to various problems with file paths, care should be taken to ensure
 
 Lets go through this step by step for Windows and Linux environments
 
-#### General
-##### Database for Metadata
+#### Prepare Database for Metadata
 Hopkin stores metadata e.g. regarding job definitions and values for delta handling in a metadata database. This is different to Apache Hop itself, which stores all kinds of metadata details in the filesystem, mostly as json files.
 
 At least one database needs to be provided upfront, currently supported is only MySQL/MariaDB. 
@@ -47,25 +54,24 @@ Be sure that you restrict network access to the database to your needs, e.g. rep
 Each server installation ( e.g. prod,test) of Hopkin should have its own metadata database. It depends on your development strategy if you like to create a database for each developer or if you have one shared dev database. 
 Choose a matching naming convention for the database, e.g. hopkin_prod, hopkin_test, hopkin_dev1 etc.
 
-#### Windows
-##### Preparations on OS level
+### Preparations on OS level
 As an admin user prepare a technical user that owns the installation. There is no need for admin rights so you can simply create a local user on windows. Choose a username without blanks, e.g. "hopkin". This will create a user home folder C:\Users\hopkin.
 
 We need git to fetch and manage the hopkin sources so be sure to have it installed on your system. Fetch the latest git client from https://git-scm.com/.
 
 Now log in with the new hopkin account and create C:\Users\hopkin\software where you want to put your software. 
 
-##### Install JRE
+### Install JRE
 We want to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from https://adoptium.net and unzip to C:\users\hopkin\software .
 Unzip the file and rename the resulting folder to c:\Users\hopkin\software\jre.
 
-##### Install Hop
+### Install Hop
 Download the latest or desired version of Hop from https://hop.apache.org/download and unzip to C:\Users\hopkin\software. This should create a new folder C:\Users\hopkin\software\hop.
 
-##### Install JDBC Drivers
+### Install JDBC Drivers
 Download the MariaDB/mysql JDBC driver as a jar file and put it into a new folder C:\Users\hopkin\software\jdbc.
 
-##### Clone Hopkin repository
+### Clone Hopkin repository
 The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and some control workflows and pipelines that will be described later. Start with cloning the repository as a starting point for your ETL project by running 
 
 ```
@@ -73,7 +79,7 @@ cd c:\Users\hopkin\projects
 git clone -o hopkin https://github.com/pfabrici/hopkin.git myproject
 ```
 
-##### Configuration of the software setup
+### Configuration of the software setup
 The installation paths need to be put into some user environment variables, so that hop starts from the command line and finds and puts its components. Therefore open the user environment dialog and add :
 ![Environment](doc/img/EnvironmentVariables.png?raw=true "Environment Settings")
 Finally add the hop location to the users path variable
