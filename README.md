@@ -1,10 +1,14 @@
 # Hopkin
 
 * [Purpose](#Purpose)
-* [Getting started with Apache Hop and Hopkin](#Getting started with Apache Hop and Hopkin)
+* [Getting started with Apache Hop and Hopkin](#Getting-started-with-Apache-Hop-and-Hopkin)
     * [General](#General)
     * [Prepare Database for Metadata](#Prepare-Database-for-Metadata)
     * [Preparations on OS level](#Preparations-on-OS-level)
+    * [Install JRE](#Install-JRE)
+    * [Install Apache Hop](#Install-Apache-Hop)
+    * [Install JDBC Drivers](#Install-JDBC-Drivers)
+    * [Clone Hopkin repository](#Clone-Hopkin-repository)
 
 
 ## Purpose
@@ -39,7 +43,7 @@ However, due to various problems with file paths, care should be taken to ensure
 
 Lets go through this step by step for Windows and Linux environments
 
-#### Prepare Database for Metadata
+### Prepare Database for Metadata
 Hopkin stores metadata e.g. regarding job definitions and values for delta handling in a metadata database. This is different to Apache Hop itself, which stores all kinds of metadata details in the filesystem, mostly as json files.
 
 At least one database needs to be provided upfront, currently supported is only MySQL/MariaDB. 
@@ -65,7 +69,7 @@ Now log in with the new hopkin account and create C:\Users\hopkin\software where
 We want to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from https://adoptium.net and unzip to C:\users\hopkin\software .
 Unzip the file and rename the resulting folder to c:\Users\hopkin\software\jre.
 
-### Install Hop
+### Install Apache Hop
 Download the latest or desired version of Hop from https://hop.apache.org/download and unzip to C:\Users\hopkin\software. This should create a new folder C:\Users\hopkin\software\hop.
 
 ### Install JDBC Drivers
