@@ -9,6 +9,7 @@
     * [Install Apache Hop](#Install-Apache-Hop)
     * [Install JDBC Drivers](#Install-JDBC-Drivers)
     * [Clone Hopkin repository](#Clone-Hopkin-repository)
+    * [Hopkins Initialization ](#Hopkins-Initialization )
 
 
 ## Purpose
@@ -76,7 +77,7 @@ Download the latest or desired version of Hop from https://hop.apache.org/downlo
 Download the MariaDB/mysql JDBC driver as a jar file and put it into a new folder C:\Users\hopkin\software\jdbc.
 
 ### Clone Hopkin repository
-The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and some control workflows and pipelines that will be described later. Start with cloning the repository as a starting point for your ETL project by running 
+The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and some control workflows and pipelines that will be described later. Clone the repository as a starting point for your ETL project by running 
 
 ```
 cd c:\Users\hopkin\projects
@@ -84,7 +85,7 @@ git clone -o hopkin https://github.com/pfabrici/hopkin.git myproject
 ```
 
 ### Configuration of the software setup
-The installation paths need to be put into some user environment variables, so that hop starts from the command line and finds and puts its components. Therefore open the user environment dialog and add :
+The installation paths need to be available in some user environment variables, so that hop starts from the command line and finds and puts its components. Therefore open the user environment dialog and add :
 ![Environment](doc/img/EnvironmentVariables.png?raw=true "Environment Settings")
 Finally add the hop location to the users path variable
 PATH=<originalPath>;C:\Users\hopkin\software\hop;
@@ -95,10 +96,10 @@ set
 ```
 to verify if the variables are set correctly.
 
-In the next step we need to create an environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository 
+In the next step we need to prepare a Hop environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository from the command line or with the file explorer :
 
 ```
-cp C:\Users\hopkin\projects\myproject\env\hopkin_env.json.template C:\Users\hopkin\config\myproject_dev.json
+copy C:\Users\hopkin\projects\myproject\env\hopkin_env.json.template C:\Users\hopkin\config\myproject_dev.json
 ```
 
 Edit C:\Users\hopkin\config\myproject_dev.json and change the values of HOPKIN_DB_USER, HOPKIN_DB_PASSWORD, HOPKIN_DB_CLASS, HOPKIN_DB_URL to what you defined in [Database for Metadata](#Database for Metadata). It is possible to use an encrypted password in HOPKIN_DB_PASSWORD. Open a terminal and  run
@@ -108,42 +109,27 @@ hop-encrypt.bat -hop <dbpassword>
 ```
 The program will return a string that you can use in the JSON file.
 
+### Hopkins Initialization 
+As software, code and configuration files are now in place we need to tell Hop which projects and environments are available :
 
+First, register project(s) :
+```
+hop-conf.bat -pc -p myproject -ph C:\Users\hopkin\projects\myproject
+```
+tells Hop that there is a project folder in C:\Users\hopkin\projects\myproject for a project called myproject. Please note that the folder and project name do not need to have the same name, the mapping is done by this call.
 
+Next, configure a reference between the formerly created environment file C:\Users\hopkin\config\myproject-dev.json definition and *myproject* by creating a Hop environment :
 
-
-
-## Initial on Windows
-- fork the original hopkin repo as a starting point for your project
-cd C:\Users\hopkin\projects
-git clone gggg myproject
-
-
-- start hop and create a new project with PROJECT_HOME pointing to your fork or use hop-conf.sh to create the project
-
-hop-conf.bat -pc -p myproject -ph ${HOME}
-
-- create an environment file that contains the configuration to the HOPKIN METADATABASE
-
-cp C:\Users\hopkin\projects\myproject\env\hopkin_env.json.template C:\Users\hopkin\config\myproject_dev.json
-Edit C:\Users\hopkin\config\myproject_dev.json 
-
-To encrypt the password use 
-hop-encrypt.bat -hop <mydbpassword>
-
+```
 hop-conf.bat -ec -e myproject-dev -eg C:\Users\hopkin\config\myproject-dev.json -ep myproject
+```
+
+
+
 hop-run.bat -j myproject -e devenv -r local -f ${PROJECT_HOME}/ctrl/hopkin_prepare.hwf
 
-## demo run
+
+
+
+### Demo run
 hop-run.bat -j myproject -e devenv -r local -f ${PROJECT_HOME}/ctrl/hopkin_main.hwf
-
-
-In case of a linux system create a ~/.profile with the following content :
-
-HOP_JAVA_HOME=/home/hopkin/software/jre
-HOP_CONFIG_FOLDER=/home/hopkin/config
-HOP_SHARED_JDBC_FOLDER=/home/hopkin/software/jdbc
-HOP_AUDIT_FOLDER=/home/hopkin/config/audit
-- add the hop location to the users path variable
-PATH=${PATH}:/home/hopkin/software/hop
-export HOP_JAVA_HOME HOP_CONFIG_FOLDER HOP_SHARED_JDBC_FOLDER HOP_AUDIT_FOLDER PATH 
