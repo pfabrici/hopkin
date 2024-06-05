@@ -6,6 +6,8 @@
     * [Prepare Database for Metadata](#Prepare-Database-for-Metadata)
     * [Preparations on OS level](#Preparations-on-OS-level)
         * [Prepare an OS User](#Prepare-an-OS-User)
+        * [Install software packages](#Install-software-packages)        
+        * [Prepare the folder structure](#Prepare-the-folder-structure)
     * [Install JRE](#Install-JRE)
     * [Install Apache Hop](#Install-Apache-Hop)
     * [Install JDBC Drivers](#Install-JDBC-Drivers)
@@ -106,33 +108,46 @@ on Linux.
 
 ### Install JRE
 It is recommended to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from [Adoptium](https://adoptium.net) and unzip to C:\users\hopkin\software .
-Unzip the file and rename the resulting folder to c:\Users\hopkin\software\jre.
+Unzip the file and rename the resulting folder to *C:\Users\hopkin\software\jre*.
 
 ### Install Apache Hop
-Download the latest or desired version of Hop from https://hop.apache.org/download and unzip to C:\Users\hopkin\software. This should create a new folder C:\Users\hopkin\software\hop.
+Download the latest or desired version of Hop from the [Apache Hop Download Site](https://hop.apache.org/download) and unzip to *C:\Users\hopkin\software* or */home/hopkin/software*. This should create a new folder C:\Users\hopkin\software\hop.
 
 ### Install JDBC Drivers
-Download the MariaDB/mysql JDBC driver as a jar file and put it into a new folder C:\Users\hopkin\software\jdbc.
+Download the MariaDB/mysql JDBC driver as a jar file and put it into a new folder *C:\Users\hopkin\software\jdbc* or */home/hopkin/software/jdbc*.
 
 ### Clone Hopkin repository
-The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and some control workflows and pipelines that will be described later. Clone the repository as a starting point for your ETL project by running 
+The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and workflows and pipelines that will be described later. Clone the repository as a starting point for your ETL project by running a git clone in a terminal :
 
-```
+On Windows execute :
+```shell
 cd c:\Users\hopkin\projects
 git clone -o hopkin https://github.com/pfabrici/hopkin.git myproject
 ```
+and 
+```shell
+cd ~/hopkin/projects
+git clone -o hopkin https://github.com/pfabrici/hopkin.git myproject
+```
+on Linux.
 
 ### Configuration of the software setup
-The installation paths need to be available in some user environment variables, so that hop starts from the command line and finds and puts its components. Therefore open the user environment dialog and add :
-![Environment](doc/img/EnvironmentVariables.png?raw=true "Environment Settings")
-Finally add the hop location to the users path variable
-PATH=<originalPath>;C:\Users\hopkin\software\hop;
+The installation paths need to be available in some user environment variables, so that hop starts from the command line and finds and puts its components. 
 
-Re-login to your hopkin user start a terminal and type 
+Therefore open the user environment dialog on Windows and add ( HOP% entries ) or change (PATH Entry):
+![Environment](doc/img/EnvironmentVariables.png?raw=true "Environment Settings")
+
+On Linux these environment variables need to be set in a file *~/.bash_profile* :
 ```
-set
+HOP_AUDIT_FOLDER=/home/hopkin/config/audit
+HOP_CONFIG_FOLDER=/home/hopkin/config
+HOP_JAVA_HOME=/home/hopkin/software/jre
+HOP_SHARED_JDBC_FOLDER=lib/jdbc,/home/hopkin/software/jdbc
+PATH=${PATH}:/home/hopkin/software/hop
+export HOP_AUDIT_FOLDER HOP_CONFIG_FOLDER HOP_JAVA_HOME HOP_SHARED_JDBC_FOLDER PATH
 ```
-to verify if the variables are set correctly.
+
+Re-login to your hopkin user start a terminal and type  ```set``` on Windows or ```env``` on LInux to check visually if the variables are set correctly.
 
 In the next step we need to prepare a Hop environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository from the command line or with the file explorer :
 
@@ -174,3 +189,4 @@ To check if everything went fine you can start a demo ETL job that is included i
 ```
 hop-run.bat -j myproject -e myproject-dev -r local -f ${PROJECT_HOME}/ctrl/hopkin_main.hwf
 ```
+
