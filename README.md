@@ -9,11 +9,12 @@
     * [Install Apache Hop](#Install-Apache-Hop)
     * [Install JDBC Drivers](#Install-JDBC-Drivers)
     * [Clone Hopkin repository](#Clone-Hopkin-repository)
-    * [Hopkins Initialization ](#Hopkins-Initialization )
+    * [Hopkins Initialization](#Hopkins-Initialization)
+    * [Demo Run](#Demo-Run)
 
 
 ## Purpose
-Hopkin aims to support you to get started with Apache Hop ( https://hop.apache.org ) projects by supplying a template project containing some useful extensions and a documentation how to set up an environment that supports developer and server.
+Hopkin aims to support you to get started implementing real projects with Apache Hop ( https://hop.apache.org ) by supplying a template project containing some useful extensions and a guideline on how to set up an environment that supports developer and headless execution on a server.
 
 The extensions include a 
 - standardized delta value handling for extractions and transformations
@@ -112,24 +113,27 @@ The program will return a string that you can use in the JSON file.
 ### Hopkins Initialization 
 As software, code and configuration files are now in place we need to tell Hop which projects and environments are available :
 
-First, register project(s) :
+First, register project(s) and environments by running two commands on the command line:
 ```
 hop-conf.bat -pc -p myproject -ph C:\Users\hopkin\projects\myproject
-```
-tells Hop that there is a project folder in C:\Users\hopkin\projects\myproject for a project called myproject. Please note that the folder and project name do not need to have the same name, the mapping is done by this call.
-
-Next, configure a reference between the formerly created environment file C:\Users\hopkin\config\myproject-dev.json definition and *myproject* by creating a Hop environment :
-
-```
 hop-conf.bat -ec -e myproject-dev -eg C:\Users\hopkin\config\myproject-dev.json -ep myproject
 ```
+tells Hop that there is a project folder in C:\Users\hopkin\projects\myproject for a project called myproject. The second command indicates that there is an environment *myproject-dev* which belongs to project *myproject* and contains one definition file.
 
+Please note that the naming convention is up to you :
+- the project name *myproject* does not need to be the same as the referenced folder
+- the environment name might be freely chosen, but is related to one project
 
-
-hop-run.bat -j myproject -e devenv -r local -f ${PROJECT_HOME}/ctrl/hopkin_prepare.hwf
-
-
-
+The last init step is calling another command line command :
+```
+hop-run.bat -j myproject -e myproject-dev -r local -f ${PROJECT_HOME}/ctrl/hopkin_prepare.hwf
+```
+This starts the execution of some Hop code which 
+- creates tables in the metadata database defined in the *myproject-dev* environment file
+- populates the tables by reading data from jobdefinition files found under the src path of the *myproject* project folder.
 
 ### Demo run
-hop-run.bat -j myproject -e devenv -r local -f ${PROJECT_HOME}/ctrl/hopkin_main.hwf
+To check if everything went fine you can start a demo ETL job that is included in the Hopkin repo by calling : 
+```
+hop-run.bat -j myproject -e myproject-dev -r local -f ${PROJECT_HOME}/ctrl/hopkin_main.hwf
+```
