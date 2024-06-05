@@ -149,15 +149,19 @@ export HOP_AUDIT_FOLDER HOP_CONFIG_FOLDER HOP_JAVA_HOME HOP_SHARED_JDBC_FOLDER P
 
 Re-login to your hopkin user start a terminal and type  ```set``` on Windows or ```env``` on LInux to check visually if the variables are set correctly.
 
-In the next step we need to prepare a Hop environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository from the command line or with the file explorer :
+In the next step we need to prepare a Hop environment file that contains the connection details to the metadata database. Copy the template environment file from the repository using the command line or with the file explorer :
 
-```
+```shell 
 copy C:\Users\hopkin\projects\myproject\env\hopkin_env.json.template C:\Users\hopkin\config\myproject_dev.json
 ```
 
-Edit C:\Users\hopkin\config\myproject_dev.json and change the values of HOPKIN_DB_USER, HOPKIN_DB_PASSWORD, HOPKIN_DB_CLASS, HOPKIN_DB_URL to what you defined in [Database for Metadata](#Database for Metadata). It is possible to use an encrypted password in HOPKIN_DB_PASSWORD. Open a terminal and  run
-
+```shell 
+cp /home/hopkin/projects/myproject/env/hopkin_env.json.template /home/hopkin/config/myproject-dev.json 
 ```
+
+Edit the new file and change the values of HOPKIN_DB_USER, HOPKIN_DB_PASSWORD, HOPKIN_DB_CLASS, HOPKIN_DB_URL to what you defined in [Database for Metadata](#Database for Metadata). It is possible to use an encrypted password in HOPKIN_DB_PASSWORD. Open a terminal and  run
+
+```shell
 hop-encrypt.bat -hop <dbpassword>
 ```
 The program will return a string that you can use in the JSON file.
@@ -166,17 +170,24 @@ The program will return a string that you can use in the JSON file.
 As software, code and configuration files are now in place we need to tell Hop which projects and environments are available :
 
 First, register project(s) and environments by running two commands on the command line:
-```
+
+On Windows 
+```shell 
 hop-conf.bat -pc -p myproject -ph C:\Users\hopkin\projects\myproject
 hop-conf.bat -ec -e myproject-dev -eg C:\Users\hopkin\config\myproject-dev.json -ep myproject
 ```
-tells Hop that there is a project folder in C:\Users\hopkin\projects\myproject for a project called myproject. The second command indicates that there is an environment *myproject-dev* which belongs to project *myproject* and contains one definition file.
+or 
+```shell 
+hop-conf.bat -pc -p myproject -ph /home/hopkin/projects/myproject
+hop-conf.bat -ec -e myproject-dev -eg /home/hopkin/config/myproject-dev.json -ep myproject
+```
+on Linux tells Hop that there is a project folder  for a project called *myproject*. The second command indicates that there is an environment *myproject-dev* which belongs to project *myproject* and contains one definition file.
 
 Please note that the naming convention is up to you :
 - the project name *myproject* does not need to be the same as the referenced folder
 - the environment name might be freely chosen, but is related to one project
 
-The last init step is calling another command line command :
+The last init step is calling another command line command and its equal in Windows and Linux
 ```
 hop-run.bat -j myproject -e myproject-dev -r local -f ${PROJECT_HOME}/ctrl/hopkin_prepare.hwf
 ```
@@ -189,4 +200,3 @@ To check if everything went fine you can start a demo ETL job that is included i
 ```
 hop-run.bat -j myproject -e myproject-dev -r local -f ${PROJECT_HOME}/ctrl/hopkin_main.hwf
 ```
-
