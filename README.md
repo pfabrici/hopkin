@@ -53,22 +53,55 @@ At least one database needs to be provided upfront, currently supported is only 
 Create this database with 
 ```sql
 CREATE DATABASE hopkin;
-GRANT ALL ON hopkin.* TO hopkin@'%' IDENTIFIED BY '<password>'
+GRANT ALL ON hopkin.* TO hopkin@'%' IDENTIFIED BY 'hopkinpwd'
 ```
-Be sure that you restrict network access to the database to your needs, e.g. replace '%' by a valid network pattern or IP.
+Be sure that you restrict network access to the database to your needs, e.g. replace '%' by a valid network pattern or IP and change the password to something secure.
 
 Each server installation ( e.g. prod,test) of Hopkin should have its own metadata database. It depends on your development strategy if you like to create a database for each developer or if you have one shared dev database. 
 Choose a matching naming convention for the database, e.g. hopkin_prod, hopkin_test, hopkin_dev1 etc.
 
 ### Preparations on OS level
-As an admin user prepare a technical user that owns the installation. There is no need for admin rights so you can simply create a local user on windows. Choose a username without blanks, e.g. "hopkin". This will create a user home folder C:\Users\hopkin.
+#### Create an OS user
+As an admin user prepare a technical user that owns the installation. There is no need for admin rights so you can simply create a local user. Choose a username without blanks, e.g. "hopkin". 
 
-We need git to fetch and manage the hopkin sources so be sure to have it installed on your system. Fetch the latest git client from https://git-scm.com/.
+On Windows run
+```shell
+net user hopkin hopkinpwd /add 
+```
+to create a user hopkin with password hopkinpwd or create the user with the corresponding dialog. The users home folder will be accessible at C:\Users\hopkin.
 
-Now log in with the new hopkin account and create C:\Users\hopkin\software where you want to put your software. 
+On Linux you can create a user and set a password by running 
+```
+sudo useradd -s /bin/bash -m hopkin
+sudo passwd hopkin
+```
+This will create a home folder /home/hopkin
+
+
+#### Install software packages
+We need git to fetch and manage the hopkin sources so be sure to have it installed on your system. Fetch the latest git client from [Git Website](https://git-scm.com/) and install the software.
+
+Now log in with the new hopkin account.
+
+#### Prepare the folder structure
+All software packages, code and configuration files will be located in subfolders in the hopkin home folder. The overall structure will look like : 
+
+![Folders](doc/img/directoryStructure.png?raw=true "Directory Structure")
+
+To prepare the folder structure run this command in a windows terminal  
+```shell
+ md projects config software\jdbc
+```
+
+or 
+```
+cd ~
+mkdir -p projects config software/jdbc
+``` 
+on Linux.
 
 ### Install JRE
-We want to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from https://adoptium.net and unzip to C:\users\hopkin\software .
+It is recommended to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from [Adoptium](https://adoptium.net) and unzip to C:\users\hopkin\software .
 Unzip the file and rename the resulting folder to c:\Users\hopkin\software\jre.
 
 ### Install Apache Hop
