@@ -12,8 +12,8 @@ The extensions include a
     - switch variable content by startparameter
 - central management of notifications ( by mail )
 
-# Getting started
-## Installation and configuration of Apache Hop
+## Getting started
+### Installation and configuration of Apache Hop with Hopkin
 
 There is a detailed documentation of how to get started with Apache Hop on its website at https://hop.apache.org/manual/latest/getting-started/. However, some more thoughts are necessary to end up with a robust installation that fulfills production needs.
 
@@ -31,47 +31,74 @@ However, due to various problems with file paths, care should be taken to ensure
 
 Lets go through this step by step for Windows and Linux environments
 
-### General
-#### Database for Metadata
+#### General
+##### Database for Metadata
+Hopkin stores metadata e.g. regarding job definitions and values for delta handling in a metadata database. This is different to Apache Hop itself, which stores all kinds of metadata details in the filesystem, mostly as json files.
 
+At least one database needs to be provided upfront, currently supported is only MySQL/MariaDB. 
 
+Create this database with 
+```sql
+CREATE DATABASE hopkin;
+GRANT ALL ON hopkin.* TO hopkin@'%' IDENTIFIED BY '<password>'
+```
+Be sure that you restrict network access to the database to your needs, e.g. replace '%' by a valid network pattern or IP.
 
-### Windows
-#### Preparations on OS level
+Each server installation ( e.g. prod,test) of Hopkin should have its own metadata database. It depends on your development strategy if you like to create a database for each developer or if you have one shared dev database. 
+Choose a matching naming convention for the database, e.g. hopkin_prod, hopkin_test, hopkin_dev1 etc.
+
+#### Windows
+##### Preparations on OS level
 As an admin user prepare a technical user that owns the installation. There is no need for admin rights so you can simply create a local user on windows. Choose a username without blanks, e.g. "hopkin". This will create a user home folder C:\Users\hopkin.
 
 We need git to fetch and manage the hopkin sources so be sure to have it installed on your system. Fetch the latest git client from https://git-scm.com/.
 
 Now log in with the new hopkin account and create C:\Users\hopkin\software where you want to put your software. 
 
-#### Install JRE
+##### Install JRE
 We want to use a Java JRE that is dedicated only to Hop to avoid malfunctions due to automatic software updates on system level. Therefore download an OpenJDK/JRE as zip or tarball e.g. from https://adoptium.net and unzip to C:\users\hopkin\software .
 Unzip the file and rename the resulting folder to c:\Users\hopkin\software\jre.
 
-#### Install Hop
+##### Install Hop
 Download the latest or desired version of Hop from https://hop.apache.org/download and unzip to C:\Users\hopkin\software. This should create a new folder C:\Users\hopkin\software\hop.
 
-### Install JDBC Drivers
+##### Install JDBC Drivers
 Download the MariaDB/mysql JDBC driver as a jar file and put it into a new folder C:\Users\hopkin\software\jdbc.
 
-### Configuration of the software setup
-It is necessary to set some environment variables for the user, so open the dialog and add :
+##### Clone Hopkin repository
+The hopkin repository contains a basic Apache Hop project. It contains a structure for ETL code, definitions of metadata tables and some control workflows and pipelines that will be described later. Start with cloning the repository as a starting point for your ETL project by running 
 
+```
+cd c:\Users\hopkin\projects
+git clone -o hopkin https://github.com/pfabrici/hopkin.git myproject
+```
+
+##### Configuration of the software setup
+The installation paths need to be put into some user environment variables, so that hop starts from the command line and finds and puts its components. Therefore open the user environment dialog and add :
 ![Environment](doc/img/EnvironmentVariables.png?raw=true "Environment Settings")
-
-HOP_JAVA_HOME=C:\Users\hopkin\software\jre
-HOP_CONFIG_FOLDER=C:\Users\hopkin\config
-HOP_SHARED_JDBC_FOLDER=C:\Users\hopkin\software\jdbc
-HOP_AUDIT_FOLDER=C:\Users\hopkin\config\audit
-
 Finally add the hop location to the users path variable
 PATH=<originalPath>;C:\Users\hopkin\software\hop;
 
+Re-login to your hopkin user start a terminal and type 
+```
+set
+``´
+to verify if the variables are set correctly.
 
-Create an additional folder C:\Users\hopkin\config to hold general config files.
+In the next step we need to create an environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository 
 
-Re-Login with the hopkin user and check, if the variables are correctly set in the environment. Test the Hop base installation by running hop-gui.bat from a terminal ( cmd ). 
-In the terminal you should see some log lines showing that a new configuration file was created in C:\Users\hopkin\config. The Hop Gui should open up after a while.
+```
+cp C:\Users\hopkin\projects\myproject\env\hopkin_env.json.template C:\Users\hopkin\config\myproject_dev.json
+```
+
+Edit C:\Users\hopkin\config\myproject_dev.json and change the values of HOPKIN_DB_USER, HOPKIN_DB_PASSWORD, HOPKIN_DB_CLASS, HOPKIN_DB_URL to what you defined in [Database for Metadata](#Database for Metadata). It is possible to use an encrypted password in HOPKIN_DB_PASSWORD. Open a terminal and  run
+
+```
+hop-encrypt.bat -hop <dbpassword>
+```
+The program will return a string that you can use in the JSON file.
+
+
 
 
 
@@ -81,12 +108,6 @@ In the terminal you should see some log lines showing that a new configuration f
 cd C:\Users\hopkin\projects
 git clone gggg myproject
 
-- prepare a dataabse to store the metadata
-currently supported is mysql, mariadb
-
-create database hopkin;
-grant all on hopkin.* to hopkin@'%' identified by 'hopkinpwd';
-( unsecure, change password and % to reasonable values )
 
 - start hop and create a new project with PROJECT_HOME pointing to your fork or use hop-conf.sh to create the project
 
