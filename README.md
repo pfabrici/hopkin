@@ -5,6 +5,7 @@
     * [General](#General)
     * [Prepare Database for Metadata](#Prepare-Database-for-Metadata)
     * [Preparations on OS level](#Preparations-on-OS-level)
+        * [Prepare an OS User](#Prepare-an-OS-User)
     * [Install JRE](#Install-JRE)
     * [Install Apache Hop](#Install-Apache-Hop)
     * [Install JDBC Drivers](#Install-JDBC-Drivers)
@@ -61,30 +62,33 @@ Each server installation ( e.g. prod,test) of Hopkin should have its own metadat
 Choose a matching naming convention for the database, e.g. hopkin_prod, hopkin_test, hopkin_dev1 etc.
 
 ### Preparations on OS level
-#### Create an OS user
-As an admin user prepare a technical user that owns the installation. There is no need for admin rights so you can simply create a local user. Choose a username without blanks, e.g. "hopkin". 
+#### Prepare an OS user
+On a developer machine you might prefer to install hopkin for an existing personal user. You can do so and simply go over to the following steps. On servers you should prefer to have a dedicated technical user which hosts the hopkin installation.
+
+Create this technical user with an admin user on Windows or with sudo/root on Linux as explained below. There is no need that the technical user gets admin rights so you can create a simple local user. Choose a username without blanks, e.g. "hopkin". 
 
 On Windows run
 ```shell
 net user hopkin hopkinpwd /add 
 ```
-to create a user hopkin with password hopkinpwd or create the user with the corresponding dialog. The users home folder will be accessible at C:\Users\hopkin.
+as Admin  to create a user hopkin with password hopkinpwd or create the user with the corresponding dialog. The users home folder will be accessible at 
+C:\Users\hopkin.
 
-On Linux you can create a user and set a password by running 
+On Linux you can create a user with the home folder /home/hopkin and set a password by running 
 ```
 sudo useradd -s /bin/bash -m hopkin
 sudo passwd hopkin
 ```
-This will create a home folder /home/hopkin
-
 
 #### Install software packages
-We need git to fetch and manage the hopkin sources so be sure to have it installed on your system. Fetch the latest git client from [Git Website](https://git-scm.com/) and install the software.
-
-Now log in with the new hopkin account.
+We need the git version control tool to fetch and manage the hopkin sources so be sure to have it installed on your system. 
+On Windows fetch the latest git client package from the [Git website](https://git-scm.com/) and install the software. On Linux git can be installed using the package manager, e.g.
+```
+sudo apt-get install git
+```
 
 #### Prepare the folder structure
-All software packages, code and configuration files will be located in subfolders in the hopkin home folder. The overall structure will look like : 
+Now log in with the new hopkin account. All software packages, code and configuration files will be located in subfolders in the hopkin home folder. The overall structure will look like : 
 
 ![Folders](doc/img/directoryStructure.png?raw=true "Directory Structure")
 
