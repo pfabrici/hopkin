@@ -1,10 +1,10 @@
 # Hopkin
 
 * [Purpose](#Purpose)
-* [Getting Started](#Getting started)
+* [Getting started with Apache Hop and Hopkin](#Getting started with Apache Hop and Hopkin)
     * [General](#General)
-    * [Prepare Database for Metadata](#General)
-    * [Preparations on OS level](#Preparations on OS level)
+    * [Prepare Database for Metadata](#Prepare-Database-for-Metadata)
+    * [Preparations on OS level](#Preparations-on-OS-level)
 
 
 ## Purpose
@@ -20,7 +20,7 @@ The extensions include a
     - switch variable content by startparameter
 - central management of notifications ( by mail )
 
-## Getting started with Apache Hop with Hopkin
+## Getting started with Apache Hop and Hopkin
 ### General
 
 There is a detailed documentation of how to get started with Apache Hop on its website at https://hop.apache.org/manual/latest/getting-started/. However, some more thoughts are necessary to end up with a robust installation that fulfills production needs.
