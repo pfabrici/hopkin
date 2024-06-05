@@ -82,7 +82,7 @@ PATH=<originalPath>;C:\Users\hopkin\software\hop;
 Re-login to your hopkin user start a terminal and type 
 ```
 set
-``´
+```
 to verify if the variables are set correctly.
 
 In the next step we need to create an environment file that contains the connection details to the metadata database. Create an additional folder C:\Users\hopkin\config and copy the template environment file from the repository 
