@@ -29,27 +29,37 @@ The extensions include a
     - switch variable content by startparameter
 - central management of notifications ( by mail )
 
+The following scenarios describe possible applications :
+
+Apache Hop's focus is on running workflows and pipelines, whereas Hopkin thinks in jobs. A Hopkin job is a combination of workflows and pipelines that is run for a specific date or date interval with a changeable connection and possibly more job specific parameters.
+
+A DWH has several identical source systems that contain data from different clients. A hop extraction is implemented in the form of workflows and pipelines that applies to all source systems. At runtime, workflows and pipelines are to be executed for each source system with different delta criteria. This can be solved with Hopkin by creating a job for each source system that contains the connection details and the delta criteria.
+
+![Jobs](doc/img/Hopkin_Purpose_Jobs.png?raw=true "Hopkin_Jobs")
+
+
 ## Getting started with Apache Hop and Hopkin
 ### General
 
-There is a detailed documentation of how to get started with Apache Hop on its website at https://hop.apache.org/manual/latest/getting-started/. However, some more thoughts are necessary to end up with a robust installation that fulfills production needs.
+There is a detailed description of how to get started with Apache Hop on [Apache Hop Online Documentation](https://hop.apache.org/manual/latest/getting-started/). However, some more thoughts are necessary to end up with a robust installation that fulfills production needs.
 
 A folder structure for the installation, that is similar for all developer and server environments in a project, is useful and a good starting point. The structure should support
 
-- easy software updates for Hop itself, the Java JRE and the JDBC drivers
-- clear handling and deployment of the projects script/program files 
+- easy software maintenance for software ( Hop and extensions, JRE, JDBC drivers )
+- clear handling and deployment of the files related to your ETL project
 - standardized environment configuration
 
-Data integration projects often require the ETL software to be installed on different developer computers and several servers, e.g. for production, testing, etc. Any combination of operating systems can be used; Windows, Mac and Linux are supported by Apache Hop for both server and client.
+Data integration projects often require the ETL software to be installed on different developer computers and several servers, e.g. for production, testing, etc. With Apache Hop any combination of operating systems that support Java can be used - mainly Windows, Mac and Linux are tested with Apache Hop for both server and client.
 
-While the servers tend to work with dedicated operating system users for the ETL processes, the developer computers tend to work with personal accounts. This documentation describes the installation with a dedicated “hopkin” operating system user, which is, however, easily transferable to personal users.
+While the servers tend to work with dedicated operating system users for the installation, on developer computers personal accounts are preferred. This documentation describes the installation with a dedicated “hopkin” operating system user, which is, however, easily transferable to personal users.
 
-However, due to various problems with file paths, care should be taken to ensure that the user names do not contain any spaces
+However, due to various problems with file paths, care should be taken to ensure that the user names do not contain any spaces.
 
-Lets go through this step by step for Windows and Linux environments
+Lets go through the installation and configuration step by step for Windows and Linux environments :
 
 ### Prepare Database for Metadata
-Hopkin stores metadata e.g. regarding job definitions and values for delta handling in a metadata database. This is different to Apache Hop itself, which stores all kinds of metadata details in the filesystem, mostly as json files.
+
+Hopkin stores job metadata regarding job definitions and values for delta handling in a metadata database. This is different to Apache Hop itself, which stores all kinds of metadata details in the filesystem, mostly as json files.
 
 At least one database needs to be provided upfront, currently supported is only MySQL/MariaDB. 
 
